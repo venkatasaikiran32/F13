@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask WebSocket Notifications</title>
+    <script src="https://cdn.socket.io/4.1.3/socket.io.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const socket = io();
+
+            socket.on('notification', (data) => {
+                const notificationDiv = document.getElementById('notifications');
+                const message = document.createElement('p');
+                message.textContent = data.message;
+                notificationDiv.appendChild(message);
+            });
+
+            document.getElementById('notify-btn').addEventListener('click', () => {
+                const notificationData = { message: 'New update received!' };
+                socket.emit('send_notification', notificationData);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Flask WebSocket Notifications</h1>
+    <div id="notifications"></div>
+    <button id="notify-btn">Send Notification</button>
+</body>
+</html>
